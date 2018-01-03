@@ -10,7 +10,7 @@ session_start();
 </head>
 <body>
 <h1>Fiche utilisateur</h1>
-<!-- PHP avel la Commande SQL -->
+<!-- PHP avec la Commande SQL -->
 <?php
 
 class InvalidHttpPostArgumentException extends Exception
@@ -22,7 +22,7 @@ try {
     }
 
     $user_id = $_POST['usr_id'];
-    $user_faux = 1;
+
     $user_login = $_POST['usr_login'];
     $user_pwd = $_POST['usr_pwd'];
     $user_name = $_POST['usr_name'];
