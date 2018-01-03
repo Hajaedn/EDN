@@ -2,8 +2,8 @@
 ini_set('display_errors', true);
 $host = '127.0.0.1';
 $db = 'mydb';
-$user = 'haja';
-$password = 'haja';
+$user = 'root';
+$password = '';
 $charset='utf8mb4';
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $opt=[

@@ -21,7 +21,8 @@ Identifiez vous :
             echo('Saisie obligatoire !');
         } else if ($err == 2) {
             echo('Mot de passe invalide !');
-        } else if ($err != 0) {
+        }
+        else if ($err != 0) {
             throw new Exception('Valeur invalide pour err');
         }
 
