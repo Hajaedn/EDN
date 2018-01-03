@@ -1,0 +1,47 @@
+<?php
+require_once 'ma_lib.php';
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Connection</title>
+</head>
+<body>
+<h1>Identification</h1>
+<!-- Première ligne avec du code PHP -->
+Identifiez vous :
+<form method="post" action="validate.php">
+    <p>
+        <input type="text" name="my_id"/><br>
+        <input type="password" name="my_pass"/>
+        <?php
+        $err = isset($_GET['err']) ? $_GET['err'] : 0;
+        if ($err == 1) {
+            echo('Saisie obligatoire !');
+        } else if ($err == 2) {
+            echo('Mot de passe invalide !');
+        } else if ($err != 0) {
+            throw new Exception('Valeur invalide pour err');
+        }
+
+        switch ($err) {
+            case 0:
+                echo "En attente de saisie";
+                break;
+            case 1:
+                echo "";
+                break;
+            case 2:
+                echo "";
+                break;
+            default:
+                throw new Exception('Valeur invalide pour err');
+        }
+        ?>
+
+        <br><br><input type="submit" value="Valider">
+    </p>
+</form>
+</body>
+</html>
