@@ -70,6 +70,12 @@ $arrAll=$prep->fetchAll();
 ?>
 </table>
 
+<form method="post" action="disconnect.php">
+    <p>
+        <br><br><input type="submit" value="Déconnecter">
+    </p>
+</form>
+
 <?php
 
 // Cloturer la requete
