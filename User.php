@@ -16,8 +16,10 @@ abstract class DbEntity
      */
     public function saveInDatabase(PDO $pdo){
         //user infos are not set or empty
-        if(empty($this->_login) || empty($this->_password) || empty($this->_name) || empty($this->_rights) || empty($this->_creationDate) || empty($this->_enable)){
-            throw new InvalidArgumentException("At least one parameter is not set or empty");
+        foreach ($this->getDbColumnsMapping() as $attrName => $dbName) {
+            if (empty($this->$attrName)) {
+                throw new InvalidArgumentException($attrName." is not set or empty");
+            }
         }
 
         if(empty($this->_id)) {
@@ -47,7 +49,8 @@ abstract class DbEntity
 
             $this->_id = $pdo->lastInsertId();
         } else {
-
+            //TODO
+            throw new Exception("pas encore implementé");
         }
     }
 }
@@ -58,12 +61,12 @@ class User extends DbEntity
     const RIGHTS_ADMIN = 'admin';
 
     private $_dbPrimaryKey;
-    private $_login;
-    private $_password;
-    private $_rights;
-    private $_creationDate;
-    private $_name;
-    private $_enable;
+    protected $_login;
+    protected $_password;
+    protected $_rights;
+    protected $_creationDate;
+    protected $_name;
+    protected $_enable;
 
     private static $_toto = 'titi';
 
@@ -76,9 +79,9 @@ class User extends DbEntity
     {
         return [
             '_login' => 'usr_login',
-            '_password' => 'usr_login',
+            '_password' => 'usr_pwd',
             '_name' => 'usr_name',
-            '_right' => 'usr_right',
+            '_rights' => 'usr_right',
             '_creationDate' => 'usr_create',
             '_enable' => 'usr_enable'
         ];
@@ -105,8 +108,21 @@ class User extends DbEntity
         ];
     }
 
-    public function setUserInfo(){
+    public function setUserInfo($login,
+                                $password,
+                                $rights,
+                                $name,
+                                $enable)
+    {
 
+        $this->_login = $login;
+        $this->_password = $password;
+        $this->setRights($rights);
+        $this->_creationDate = date('d/m/Y');
+        $this->_name = $name;
+        $this->_enable = $enable;
+
+        return $this;
     }
 
     /**
@@ -148,4 +164,6 @@ class User extends DbEntity
 
 
 $user = new User();
+
+$user->setUserInfo("matt", "m", "admin", "matthieu besson", true);
 $user->saveInDatabase($pdo);
