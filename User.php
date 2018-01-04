@@ -3,12 +3,22 @@ require_once 'ma_lib.php';
 
 abstract class DbEntity
 {
+    private $_dbPrimaryKeyValue;
+
     /** @return string */
-    abstract public function getDbPrimaryKey();
+    abstract public function getDbPrimaryKeyName();
     /** @return string */
     abstract public function getDbTableName();
     /** @return array */
     abstract public function getDbColumnsMapping();
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->_dbPrimaryKeyValue;
+    }
 
     /**
      * @param PDO $pdo
@@ -22,7 +32,7 @@ abstract class DbEntity
             }
         }
 
-        if(empty($this->_id)) {
+        if(empty($this->_dbPrimaryKeyValue)) {
             // Liste des Utilisateurs "actifs"
 
             $sql = 'INSERT INTO ' . $this->getDbTableName() . '(';
@@ -47,11 +57,28 @@ abstract class DbEntity
 
             $prep->execute();
 
-            $this->_id = $pdo->lastInsertId();
+            $this->_dbPrimaryKeyValue = $pdo->lastInsertId();
         } else {
             //TODO
             throw new Exception("pas encore implementé");
         }
+    }
+
+    /**
+     * @param PDO $pdo
+     * @throws Exception
+     */
+    public function deleteInDataBase(PDO $pdo){
+
+        // ensure primary key is not NULL
+        if(empty($this->_dbPrimaryKeyValue)) {
+           throw new Exception("Trying to delete user without it's primary key");
+        }
+
+        $query = "DELETE FROM {$this->getDbTableName()} WHERE {$this->getDbPrimaryKeyName()} =:id";
+        $prep = $pdo->prepare($query);
+        $prep->bindValue(':id', $this->_dbPrimaryKeyValue, PDO::PARAM_STR);
+        $prep->execute();
     }
 }
 
@@ -60,7 +87,6 @@ class User extends DbEntity
     const RIGHTS_USER = 'user';
     const RIGHTS_ADMIN = 'admin';
 
-    private $_dbPrimaryKey;
     protected $_login;
     protected $_password;
     protected $_rights;
@@ -87,9 +113,9 @@ class User extends DbEntity
         ];
     }
 
-    public function getDbPrimaryKey()
+    public function getDbPrimaryKeyName()
     {
-        return $this->_dbPrimaryKey;
+        return 'usr_id';
     }
 
     /**
@@ -162,8 +188,19 @@ class User extends DbEntity
  */
 
 
-
+// ----------- TEST ------------
 $user = new User();
 
-$user->setUserInfo("matt", "m", "admin", "matthieu besson", true);
-$user->saveInDatabase($pdo);
+$user->setUserInfo("napparait pas2", "m", User::RIGHTS_ADMIN, "matthieu besson", true);
+
+try {
+    $user->saveInDatabase($pdo);
+} catch (Exception $e) {
+    die($e->getMessage());
+}
+
+try {
+    $user->deleteInDataBase($pdo);
+} catch (Exception $e) {
+    die($e->getMessage());
+}
