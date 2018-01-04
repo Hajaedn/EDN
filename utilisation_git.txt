@@ -12,3 +12,17 @@
 
     //solution 2 :
         git pull
+
+
+// Effectue un push et définit la branche par défaut pour push / pull / ...
+
+    git push --set-upstream origin [branche souhaitée]
+
+
+// Si j'ai modifié un fichier et que je veux qu'il apparaisse dans toutes les branches
+
+    changer de branche pour aller dans master
+    commiter le changement
+    push
+    aller dans la branche user-class par ex
+    git merge master
