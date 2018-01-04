@@ -17,6 +17,11 @@ class User
      */
     public static function getRightsValues()
     {
+        /*
+         * self::$_champ_statique : accéder à un champ static de classe à l'intérieur de celle-ci
+         * self::méthode_statique() : accéder à une méthode static de classe à l'intérieur de celle-ci
+         */
+        self::$_toto;
         return [
             self::RIGHTS_USER,
             self::RIGHTS_ADMIN
@@ -29,6 +34,7 @@ class User
      */
     public function setId($id)
     {
+        //contrôle de l'argument
         if(!is_int($id)) {
             throw new InvalidArgumentException('Id is not an integer');
         }
@@ -57,4 +63,5 @@ class User
 }
 
 $user = new User();
-$user->setId(1)->setRights('admin');
+
+$user->setId(1)->setRights('admin');//chaînage des méthodes possible grâce à "return $this;" en fin de méthode
