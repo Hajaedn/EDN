@@ -21,24 +21,27 @@ Identifiez vous :
             echo('Saisie obligatoire !');
         } else if ($err == 2) {
             echo('Mot de passe invalide !');
-        }
-        else if ($err != 0) {
+        } else if ($err == 3) {
+            echo('Profil corrompu !');
+        } else if ($err == 4) {
+            echo('Profil désactivé !');
+        } else if ($err != 0) {
             throw new Exception('Valeur invalide pour err');
         }
 
-        switch ($err) {
-            case 0:
-                echo "En attente de saisie";
-                break;
-            case 1:
-                echo "";
-                break;
-            case 2:
-                echo "";
-                break;
-            default:
-                throw new Exception('Valeur invalide pour err');
-        }
+//        switch ($err) {
+//            case 0:
+//                echo "En attente de saisie";
+//                break;
+//            case 1:
+//                echo "";
+//                break;
+//            case 2:
+//                echo "";
+//                break;
+//            default:
+//        throw new Exception('Valeur invalide pour err');
+//        }
         ?>
 
         <br><br><input type="submit" value="Valider">
