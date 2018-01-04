@@ -11,3 +11,4 @@ CREATE
 		);
 
 
+Select * from users;

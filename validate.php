@@ -33,19 +33,36 @@ else{
     $prep->bindValue(':usr_login', $_POST['my_id'], PDO::PARAM_STR);
     $prep->bindValue(':usr_pwd', $_POST['my_pass'], PDO::PARAM_STR);
     $prep->execute();
-    $result = $prep->rowCount();
+    $result = $prep->fetch();
+    $result_nb = $prep->rowCount();
 
-
-    if ($result == 0){
+    if ($result_nb == 0){
         //pas enregistré
         header("Location: index.php?err=2");
 
-    }elseif ($result > 1){
+    }elseif ($result_nb > 1){
         //problème conflit bdd
 
-    }elseif ($result == 1) {
-        //l'utilisateur est inscrit en base de données
+        header("Location: index.php?err=3");
+    }elseif ($result_nb == 1) {
 
+        //l'utilisateur est inscrit en base de données
+        // Connexion Ok : Vérif droits
+        $_SESSION['sess_actif']=$result[('usr_enable')];
+
+        if ($_SESSION['sess_actif']=1) {
+            $actif='oui';
+            var_dump($_SESSION['sess_actif']);
+            die;
+        } else {
+            // Utilisateur désactivé
+            $actif='non';
+            header("Location: index.php?err=4");
+        }
+        $_SESSION['sess_droits']=$result[('usr_right')];
+        if ($_SESSION['sess_droits']='admin') {
+            $admin='oui';
+        }
     }
 
 
@@ -62,8 +79,11 @@ else{
     session_start();
 // var_dump($identity . " " . $passw);
 // die;
+
     $_SESSION['login']=$identity;
     $_SESSION['validate']='ok';
+//    var_dump($_SESSION['sess_droits']);
+//    die;
     header("Location: suite.php");
 ?>
 
