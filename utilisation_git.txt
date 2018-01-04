@@ -14,9 +14,12 @@
         git pull
 
 
+
 // Effectue un push et définit la branche par défaut pour push / pull / ...
 
     git push --set-upstream origin [branche souhaitée]
+
+
 
 
 // Si j'ai modifié un fichier et que je veux qu'il apparaisse dans toutes les branches
