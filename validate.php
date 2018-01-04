@@ -16,74 +16,50 @@ $opt=[
 ];
 
 
-if (empty($_POST['my_id']) or (empty($_POST['my_pass']))) {
+if (empty($_POST['my_id']) || (empty($_POST['my_pass']))) {
     // Erreur paramètres non saisis
     $_SESSION['validate']='non';
     session_destroy();
     header("Location: index.php?err=1");
     exit;
 }
-else{
-    $pdo = new pdo($dsn, $user, $password, $opt);
 
-    // Liste des Utilisateurs "actifs"
+$pdo = new pdo($dsn, $user, $password, $opt);
 
-    $query = 'SELECT * FROM users WHERE usr_login =:usr_login AND usr_pwd =:usr_pwd';
-    $prep = $pdo->prepare($query);
-    $prep->bindValue(':usr_login', $_POST['my_id'], PDO::PARAM_STR);
-    $prep->bindValue(':usr_pwd', $_POST['my_pass'], PDO::PARAM_STR);
-    $prep->execute();
-    $result = $prep->fetch();
-    $result_nb = $prep->rowCount();
+// Liste des Utilisateurs "actifs"
 
-    if ($result_nb == 0){
-        //pas enregistré
-        header("Location: index.php?err=2");
+$query = 'SELECT * FROM users WHERE usr_login =:usr_login AND usr_pwd =:usr_pwd';
+$prep = $pdo->prepare($query);
+$prep->bindValue(':usr_login', $_POST['my_id'], PDO::PARAM_STR);
+$prep->bindValue(':usr_pwd', $_POST['my_pass'], PDO::PARAM_STR);
+$prep->execute();
+$result = $prep->fetch();
+$result_nb = $prep->rowCount();
 
-    }elseif ($result_nb > 1){
-        //problème conflit bdd
+$err = false;
 
-        header("Location: index.php?err=3");
-    }elseif ($result_nb == 1) {
-
-        //l'utilisateur est inscrit en base de données
-        // Connexion Ok : Vérif droits
-        $_SESSION['sess_actif']=$result[('usr_enable')];
-
-        if ($_SESSION['sess_actif']=1) {
-            $actif='oui';
-            var_dump($_SESSION['sess_actif']);
-            die;
-        } else {
-            // Utilisateur désactivé
-            $actif='non';
-            header("Location: index.php?err=4");
-        }
-        $_SESSION['sess_droits']=$result[('usr_right')];
-        if ($_SESSION['sess_droits']='admin') {
-            $admin='oui';
-        }
-    }
-
-
+if ($result_nb == 0){
+    //pas enregistré
+    $err = 2;
+}elseif ($result_nb > 1){
+    //problème conflit bdd
+    $err = 3;
+}elseif ($result_nb == 1 && $result['usr_enable']!=1) {
+    // Utilisateur désactivé
+    $err = 4;
 }
-////
-////if ($passw != ($identity . '123')) {
-////    // Erreur mot de passe
-////    $_SESSION['validate']='non';
-////    session_destroy();
-////    header("Location: index.php?err=2");
-////    exit;
-//}
+
+if ($err !== false) {
+    header("Location: index.php?err={$err}");
+    exit;
+}
+
 // It's OK !!
-    session_start();
-// var_dump($identity . " " . $passw);
-// die;
+session_start();
+$_SESSION['sess_actif']=$result[('usr_enable')];
+//l'utilisateur est inscrit en base de données
+$_SESSION['sess_droits']=$result[('usr_right')];
+$_SESSION['login']= $_POST['my_id'];
+$_SESSION['name']= $result['usr_name'];
 
-    $_SESSION['login']=$identity;
-    $_SESSION['validate']='ok';
-//    var_dump($_SESSION['sess_droits']);
-//    die;
-    header("Location: suite.php");
-?>
-
+header("Location: suite.php");
