@@ -1,0 +1,14 @@
+// Envoyer les modifications locales sur la branche distante
+
+    git push
+
+
+
+// Pour récupérer les modifs distantes
+
+    //solution 1 :
+        git fetch
+        git merge
+
+    //solution 2 :
+        git pull
