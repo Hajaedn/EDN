@@ -16,7 +16,6 @@ $opt=[
     PDO::ATTR_EMULATE_PREPARES => false
 ];
 
-
 if (empty($_POST['my_id']) || (empty($_POST['my_pass']))) {
     // Erreur paramètres non saisis
     $_SESSION['validate']='non';
@@ -62,5 +61,5 @@ $_SESSION['sess_actif']=$result[('usr_enable')];
 $_SESSION['sess_droits']=$result[('usr_right')];
 $_SESSION['login']= $_POST['my_id'];
 $_SESSION['name']= $result['usr_name'];
-
+$_SESSION['id']= $result['usr_id'];
 header("Location: suite.php");

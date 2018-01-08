@@ -2,8 +2,8 @@
 ini_set('display_errors', true);
 $host = '127.0.0.1';
 $db = 'mydb';
-$user = 'root';
-$password = '';
+$user = 'haja';
+$password = 'haja';
 $charset='utf8mb4';
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $opt=[
@@ -12,6 +12,8 @@ $opt=[
     PDO::ATTR_EMULATE_PREPARES => false
 ];
 $pdo = new pdo($dsn, $user, $password, $opt);
+
+
 $tristesse = array (
     'Choix1' => 'Pas bien grave !',
     'Choix2' => 'C\'est dommage !',
@@ -22,3 +24,29 @@ $option_fiche = array (
     'Choix_option3' => 'Supprimer');
 
 
+function CheckId($id) {
+    global $pdo;
+    $query = 'SELECT * FROM users WHERE usr_id =:usr_id';
+    $prep = $pdo->prepare($query);
+    $prep->bindValue(':usr_id', $id, PDO::PARAM_INT);
+    $prep->execute();
+    $result = $prep->fetch();
+    $result_nb = $prep->rowCount();
+    if ($result_nb != 1) {
+        return false;
+    }
+
+    return true;
+}
+
+//
+function CheckRight($my_id, $id_change) {
+    // Profil admin
+    if ($_SESSION['sess_droits']=='admin'){
+        return true;
+    // ou Modif sur son propre profil
+    }elseif ($my_id==$id_change) {
+        return true;
+    }
+    return false;
+}

@@ -1,6 +1,8 @@
 <?php
 require_once 'ma_lib.php';
 session_start();
+if (!CheckId($_SESSION['id'])) {header("Location: index.php");}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,7 +12,8 @@ session_start();
 </head>
 <body>
 <h1>Liste des utilisateurs</h1>
-<!-- Première ligne avec du code PHP -->
+
+<a>Vous êtes : </a><?php echo $_SESSION['name'] ?>
 
 <?php
 $pdo = new pdo($dsn, $user, $password, $opt);
@@ -19,7 +22,6 @@ $pdo = new pdo($dsn, $user, $password, $opt);
 
 $query = 'SELECT * FROM users';
 $prep = $pdo->prepare($query);
-// $prep->bindValue(':usr_create', 0, PDO::PARAM_INT);
 $prep->execute();
 
 $arrAll=$prep->fetchAll();
@@ -28,7 +30,7 @@ $arrAll=$prep->fetchAll();
 <p>Créer un utilisateur <a href="usr_new.php">Création</a><br></p>
 
 <!-- Tableau : Liste des utilisateurs -->
-<table border=6 cellspacing="6" width="80%" align="center">
+<table border=2 cellspacing="2" width="80%" align="center">
     <!-- Ligne titre -->
     <tr>
         <th width="15%"> Utilisateur </th>
@@ -60,8 +62,10 @@ $arrAll=$prep->fetchAll();
         <td align='center'><?= $create ?></td>
         <td align='center'><?= $enable ?></td>
         <td><a href='usr_fiche_view.php?nom=<?= $id ?>&action=voir'>Voir</a>
+            <?php if (($_SESSION['sess_droits'] == 'admin') || ($_SESSION['id']==$id)){ ?>
             <a href="usr_fiche_edit.php?nom=<?= $id ?>">Edit</a>
             <a href='usr_fiche_view.php?nom=<?= $id ?>&action=suppr'>Delete</a>
+                <?php } ?>
         </td>
     </tr>
 
