@@ -1,6 +1,8 @@
 <?php
 require_once 'ma_lib.php';
 session_start();
+if (!CheckId($_SESSION['id'])) {header("Location: index.php");}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,8 +15,10 @@ session_start();
 <!-- PHP avec la Commande SQL -->
 <?php
 
+
 class InvalidHttpPostArgumentException extends Exception
 {}
+
 
 try {
     if (empty($_POST['usr_id'])) {
@@ -30,17 +34,11 @@ try {
     $user_create = $_POST['usr_create'];
     $user_enable = $_POST['usr_enable'];
 
-    function testException2()
-    {
-        testException();
+
+    if (CheckRight($_SESSION['id'], $user_id)==false) {
+        throw new InvalidHttpPostArgumentException('Pas les droits');
     }
 
-    function testException()
-    {
-        throw new Exception('test');
-    }
-
-    testException2();
 
     $pdo = new pdo($dsn, $user, $password, $opt);
 
@@ -60,7 +58,7 @@ try {
 } catch (PDOException $e) {
     die('Erreur de base de donnée cachée');
 } catch (Exception $e) {
-    var_dump($e->getTrace());
+    var_dump($e->getTraceAsString());
     die('Autre erreur cachée');
 }
 

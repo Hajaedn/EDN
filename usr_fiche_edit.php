@@ -14,7 +14,11 @@ session_start();
 <!-- Saisie des infos pour un utilisateur existant -->
 <!-- Première ligne avec du code PHP -->
 <?php
+
     $key=$_GET["nom"];
+    if (CheckRight($_SESSION['id'], $key)==false) {
+        throw new Exception('Pas les droits');
+    }
 
     $pdo = new pdo($dsn, $user, $password, $opt);
     $query = 'SELECT * FROM users WHERE usr_id =:usr_id';

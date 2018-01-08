@@ -1,6 +1,7 @@
 <?php
 require_once 'ma_lib.php';
 session_start();
+if (!CheckId($_SESSION['id'])) {header("Location: index.php");}
 ?>
 <!DOCTYPE html>
 <html>
@@ -28,9 +29,10 @@ session_start();
 </form>
 
 <?php
-setlocale(LC_TIME, "fr_FR", "French");
+date_default_timezone_set('Europe/Paris');
+setlocale(LC_TIME, "fr_FR", 'fra');
 $mydate = date('d/m/Y');
-$myhour = date('h:i:sa');
+$myhour = date('H:i:sa');
 $mois = array(1 => 'janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
 $jours = array('dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi');
 // echo "Nous sommes le : " . $mydate;

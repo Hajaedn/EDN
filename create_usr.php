@@ -1,7 +1,10 @@
 <?php
 require_once 'ma_lib.php';
 session_start();
+
 require_once 'User.php';
+if (!CheckId($_SESSION['id'])) {header("Location: index.php");}
+
 ?>
 <!DOCTYPE html>
 <html>
