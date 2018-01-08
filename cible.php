@@ -1,7 +1,11 @@
 <?php
 require_once 'ma_lib.php';
 session_start();
-if (!CheckId($_SESSION['id'])) {header("Location: index.php");}
+
+//vérification de la connexion
+$pdo = new pdo($dsn, $user, $password, $opt);
+$user = User::checkId($pdo, $_SESSION['id']);
+if (empty($user)) {header("Location: index.php");}
 ?>
 <html>
 <head>

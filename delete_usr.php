@@ -2,6 +2,7 @@
 require_once 'ma_lib.php';
 session_start();
 
+//vérification de la connexion
 $pdo = new pdo($dsn, $user, $password, $opt);
 $user = User::checkId($pdo, $_SESSION['id']);
 if (empty($user)) {header("Location: index.php");}
@@ -30,19 +31,6 @@ try {
     die($e->getMessage());
 }
 
-//
-//try {
-//    $pdo = new pdo($dsn, $user, $password, $opt);
-//
-//    // Liste des Utilisateurs "actifs"
-//
-//    $query = 'DELETE FROM users WHERE usr_id =:usr_id';
-//    $prep = $pdo->prepare($query);
-//    $prep->bindValue(':usr_id', $key, PDO::PARAM_STR);
-//    $prep->execute();
-//} catch (PDOException $e) {
-//    die('Erreur : ' .$e->getMessage());
-//}
 header("Location: usr_list.php");
 ?>
 

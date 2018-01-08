@@ -16,7 +16,6 @@ session_start();
     $action=$_GET["action"];
 
 
-
 if (empty($_SESSION['login'])) {
     header("Location: index.php");
 }

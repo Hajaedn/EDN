@@ -233,6 +233,13 @@ class User extends DbEntity
         return $this;
     }
 
+    /**
+     * @param PDO $pdo
+     * @param $login
+     * @param $password
+     * @return User
+     * @throws Exception
+     */
     public static function connect(PDO $pdo, $login, $password){
 
         $query = 'SELECT * FROM users WHERE usr_login =:login AND usr_pwd =:password';
@@ -265,6 +272,11 @@ class User extends DbEntity
         return $user;
     }
 
+    /**
+     * @param PDO $pdo
+     * @param $id
+     * @return User
+     */
     public static function checkId(PDO $pdo, $id) {
 
         $user = new User();
