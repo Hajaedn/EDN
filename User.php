@@ -138,16 +138,17 @@ class User extends DbEntity
                                 $password,
                                 $rights,
                                 $name,
-                                $enable)
+                                $enable,
+                                $creationDate)
     {
 
         $this->_login = $login;
         $this->_password = $password;
         $this->setRights($rights);
-        $this->_creationDate = date('d/m/Y');
+        //$this->_creationDate = date('d/m/Y');
         $this->_name = $name;
         $this->_enable = $enable;
-
+        $this->_creationDate = $creationDate;
         return $this;
     }
 
@@ -189,18 +190,18 @@ class User extends DbEntity
 
 
 // ----------- TEST ------------
-$user = new User();
-
-$user->setUserInfo("napparait pas2", "m", User::RIGHTS_ADMIN, "matthieu besson", true);
-
-try {
-    $user->saveInDatabase($pdo);
-} catch (Exception $e) {
-    die($e->getMessage());
-}
-
-try {
-    $user->deleteInDataBase($pdo);
-} catch (Exception $e) {
-    die($e->getMessage());
-}
+//$user = new User();
+//
+//$user->setUserInfo("napparait pas2", "m", User::RIGHTS_ADMIN, "matthieu besson", true);
+//
+//try {
+//    $user->saveInDatabase($pdo);
+//} catch (Exception $e) {
+//    die($e->getMessage());
+//}
+//
+//try {
+//    $user->deleteInDataBase($pdo);
+//} catch (Exception $e) {
+//    die($e->getMessage());
+//}
