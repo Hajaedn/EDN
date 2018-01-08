@@ -189,7 +189,7 @@ class User extends DbEntity
          * self::$_champ_statique : accéder à un champ static de classe à l'intérieur de celle-ci
          * self::méthode_statique() : accéder à une méthode static de classe à l'intérieur de celle-ci
          */
-        self::$_toto;
+
         return [
             self::RIGHTS_USER,
             self::RIGHTS_ADMIN

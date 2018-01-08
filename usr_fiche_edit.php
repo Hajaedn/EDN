@@ -1,7 +1,11 @@
 <?php
 require_once 'ma_lib.php';
 session_start();
-if (!CheckId($_SESSION['id'])) {header("Location: index.php");}
+
+$pdo = new pdo($dsn, $user, $password, $opt);
+$user = User::checkId($pdo, $_SESSION['id']);
+if (empty($user)) {header("Location: index.php");}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,7 +25,7 @@ if (!CheckId($_SESSION['id'])) {header("Location: index.php");}
         throw new Exception('Pas les droits');
     }
 
-    $pdo = new pdo($dsn, $user, $password, $opt);
+//    $pdo = new pdo($dsn, $user, $password, $opt);
     $query = 'SELECT * FROM users WHERE usr_id =:usr_id';
     $prep = $pdo->prepare($query);
     $prep->bindValue(':usr_id', $key, PDO::PARAM_STR);

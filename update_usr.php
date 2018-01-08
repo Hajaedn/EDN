@@ -1,7 +1,10 @@
 <?php
 require_once 'ma_lib.php';
 session_start();
-if (!CheckId($_SESSION['id'])) {header("Location: index.php");}
+
+$pdo = new pdo($dsn, $user, $password, $opt);
+$user = User::checkId($pdo, $_SESSION['id']);
+if (empty($user)) {header("Location: index.php");}
 
 ?>
 <!DOCTYPE html>
@@ -40,7 +43,7 @@ try {
     }
 
 
-    $pdo = new pdo($dsn, $user, $password, $opt);
+//    $pdo = new pdo($dsn, $user, $password, $opt);
 
     // Mise à jour Utilisateur
     $sql = 'UPDATE users set  usr_login = :usr_login, usr_pwd=:usr_pwd, usr_name=:usr_name, usr_right=:usr_right, usr_create=:usr_create, usr_enable=:usr_enable where usr_id=:id';
