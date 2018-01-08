@@ -1,7 +1,11 @@
 <?php
 require_once 'ma_lib.php';
 session_start();
-if (!CheckId($_SESSION['id'])) {header("Location: index.php");}
+$pdo = new pdo($dsn, $user, $password, $opt);
+//var_dump($_SESSION['id']);
+//die;
+$user = User::checkId($pdo, $_SESSION['id']);
+if (empty($user)) {header("Location: index.php");}
 
 ?>
 <!DOCTYPE html>
@@ -16,7 +20,7 @@ if (!CheckId($_SESSION['id'])) {header("Location: index.php");}
 <a>Vous êtes : </a><?php echo $_SESSION['name'] ?>
 
 <?php
-$pdo = new pdo($dsn, $user, $password, $opt);
+//$pdo = new pdo($dsn, $user, $password, $opt);
 
 // Liste des Utilisateurs "actifs"
 
@@ -61,10 +65,10 @@ $arrAll=$prep->fetchAll();
         <td align='center'><?= $right ?></td>
         <td align='center'><?= $create ?></td>
         <td align='center'><?= $enable ?></td>
-        <td><a href='usr_fiche_view.php?nom=<?= $id ?>&action=voir'>Voir</a>
+        <td><a href='usr_fiche_view.php?id=<?= $id ?>&action=voir'>Voir</a>
             <?php if (($_SESSION['sess_droits'] == 'admin') || ($_SESSION['id']==$id)){ ?>
             <a href="usr_fiche_edit.php?nom=<?= $id ?>">Edit</a>
-            <a href='usr_fiche_view.php?nom=<?= $id ?>&action=suppr'>Delete</a>
+            <a href='usr_fiche_view.php?id=<?= $id ?>&action=suppr'>Delete</a>
                 <?php } ?>
         </td>
     </tr>

@@ -12,7 +12,7 @@ session_start();
 <h1>Fiche utilisateur</h1>
 <!-- Première ligne avec du code PHP -->
 <?php
-    $key=$_GET["nom"];
+    $key=$_GET["id"];
     $action=$_GET["action"];
 
 
@@ -58,7 +58,7 @@ if ($result['usr_right']=='admin') {
 ?>
     <form method="get" action="delete_usr.php">
         <p><br>
-            <input type="hidden" name="nom" value="<?= $key ?>">
+            <input type="hidden" name="id" value="<?= $key ?>">
             <br><input type="submit" value="Delete">
         </p>
 

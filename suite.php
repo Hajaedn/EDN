@@ -1,6 +1,7 @@
 <?php
 require_once 'ma_lib.php';
 session_start();
+
 ?>
 <!DOCTYPE html>
 <html>

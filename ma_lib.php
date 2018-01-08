@@ -2,6 +2,7 @@
 ini_set('display_errors', true);
 
 require_once "config.php";
+require_once "User.php";
 
 $host = $config['host'];
 $db = $config['db'];
@@ -27,20 +28,7 @@ $option_fiche = array (
     'Choix_option3' => 'Supprimer');
 
 
-function CheckId($id) {
-    global $pdo;
-    $query = 'SELECT * FROM users WHERE usr_id =:usr_id';
-    $prep = $pdo->prepare($query);
-    $prep->bindValue(':usr_id', $id, PDO::PARAM_INT);
-    $prep->execute();
-    $result = $prep->fetch();
-    $result_nb = $prep->rowCount();
-    if ($result_nb != 1) {
-        return false;
-    }
 
-    return true;
-}
 
 //
 function CheckRight($my_id, $id_change) {

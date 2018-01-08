@@ -20,6 +20,13 @@ abstract class DbEntity
         return $this->_dbPrimaryKeyValue;
     }
 
+    public function setId($id){
+        if(empty($id)){
+            throw new Exception("Id is null or empty");
+        }
+        $this->_dbPrimaryKeyValue = $id;
+    }
+
     /**
      * @param PDO $pdo
      * @throws Exception
@@ -68,25 +75,70 @@ abstract class DbEntity
      * @param PDO $pdo
      * @throws Exception
      */
-    public function deleteInDataBase(PDO $pdo){
+    public static function deleteInDataBase(PDO $pdo, User $user){
 
         // ensure primary key is not NULL
-        if(empty($this->_dbPrimaryKeyValue)) {
+        if(empty($user->_dbPrimaryKeyValue)) {
            throw new Exception("Trying to delete user without it's primary key");
         }
 
-        $query = "DELETE FROM {$this->getDbTableName()} WHERE {$this->getDbPrimaryKeyName()} =:id";
+        $query = "DELETE FROM {$user->getDbTableName()} WHERE {$user->getDbPrimaryKeyName()} =:id";
         $prep = $pdo->prepare($query);
-        $prep->bindValue(':id', $this->_dbPrimaryKeyValue, PDO::PARAM_STR);
+        $prep->bindValue(':id', $user->_dbPrimaryKeyValue, PDO::PARAM_STR);
         $prep->execute();
     }
+
+
+    public function getInfosFromDataBaseById(PDO $pdo, $id){
+        $query = 'SELECT * FROM ' . $this->getDbTableName() . ' WHERE ' . $this->getDbPrimaryKeyName() . ' =:id';
+        $prep = $pdo->prepare($query);
+        $prep->bindValue(':id', $id, PDO::PARAM_STR);
+        $prep->execute();
+        $result = $prep->fetch();
+
+        return $result;
+    }
+
+    public function getAttribute(PDO $pdo, $id, $attrNames){
+
+        if(empty($id)){
+            throw new InvalidArgumentException("Id is not set or empty");
+        }
+
+        foreach ($attrNames as $attrName) {
+            if (empty($attrName)) {
+                throw new InvalidArgumentException($attrName." is not set or empty");
+            }
+        }
+
+        $query = 'SELECT \'';
+        $query .= implode(', ', array_values($attrNames));
+        $query .= ' WHERE '. $this->getDbPrimaryKeyName() . '=:id';
+
+
+        $prep = $pdo->prepare($query);
+
+        $prep->bindValue(':id', $id, PDO::PARAM_STR);
+        $prep->execute();
+
+
+        $attributesValue = $prep->fetch();
+
+        return $attributesValue;
+    }
+
+
 }
+
+
 
 class User extends DbEntity
 {
     const RIGHTS_USER = 'user';
     const RIGHTS_ADMIN = 'admin';
 
+
+    protected $_id;
     protected $_login;
     protected $_password;
     protected $_rights;
@@ -94,7 +146,7 @@ class User extends DbEntity
     protected $_name;
     protected $_enable;
 
-    private static $_toto = 'titi';
+
 
     public function getDbTableName()
     {
@@ -111,6 +163,16 @@ class User extends DbEntity
             '_creationDate' => 'usr_create',
             '_enable' => 'usr_enable'
         ];
+    }
+
+    /**
+     * @param $array
+     */
+    public function parseUserInfo($array){
+        foreach($this->getDbColumnsMapping() as $attrName => $dbName) {
+            $$attrName = $array[$dbName];
+        }
+        $this->setId($array[$this->getDbPrimaryKeyName()]);
     }
 
     public function getDbPrimaryKeyName()
@@ -152,6 +214,8 @@ class User extends DbEntity
         return $this;
     }
 
+
+
     /**
      * @param $rights
      * @return User
@@ -169,9 +233,54 @@ class User extends DbEntity
         return $this;
     }
 
-    public function connect(User $user){
-        $_SESSION['connected_user'] = $user->getId();
+    public static function connect(PDO $pdo, $login, $password){
+
+        $query = 'SELECT * FROM users WHERE usr_login =:login AND usr_pwd =:password';
+        $prep = $pdo->prepare($query);
+        $prep->bindValue(':login', $login, PDO::PARAM_STR);
+        $prep->bindValue(':password', $password, PDO::PARAM_STR);
+        $prep->execute();
+
+        $result = $prep->fetch();
+        $result_nb = $prep->rowCount();
+
+        if($result_nb != 1){
+            throw new Exception("Invalid row count : ". $result_nb);
+        }
+
+
+        $user = new User();
+        $user->parseUserInfo($result);
+
+        session_start();
+//      $_SESSION['connected_user'] = $user->getId();
+        $_SESSION['id'] = $user->getId();
+        $_SESSION['sess_actif']=$result[('usr_enable')];
+    //l'utilisateur est inscrit en base de données
+        $_SESSION['sess_droits']=$result[('usr_right')];
+        $_SESSION['login']= $_POST['my_id'];
+        $_SESSION['name']= $result['usr_name'];
+        $_SESSION['id']= $result['usr_id'];
+
+        return $user;
     }
+
+    public static function checkId(PDO $pdo, $id) {
+
+        $user = new User();
+
+        $result = $user->getInfosFromDataBaseById($pdo, $id);
+
+        if (empty($result)) {
+
+        }
+
+
+        $user->parseUserInfo($result);
+
+        return $user;
+    }
+
 
     public function disconnect() {
         unset($_SESSION['connected_user']);
@@ -187,15 +296,22 @@ class User extends DbEntity
  *      $user->setId(1)->setRights('admin');
  *
  */
-
-
+//
+//
 // ----------- TEST ------------
-//$user = new User();
 //
 //$user->setUserInfo("napparait pas2", "m", User::RIGHTS_ADMIN, "matthieu besson", true);
 //
 //try {
-//    $user->saveInDatabase($pdo);
+//    //$user->saveInDatabase($pdo);//id créé et stocké dans la classe
+//
+//    //$user = new User();
+//
+//    $user = User::connect($pdo, "robert", "123");
+//
+//
+//    //$user = User::getUserById($pdo, $id);
+//
 //} catch (Exception $e) {
 //    die($e->getMessage());
 //}

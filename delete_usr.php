@@ -1,7 +1,10 @@
 <?php
 require_once 'ma_lib.php';
 session_start();
-if (!CheckId($_SESSION['id'])) {header("Location: index.php");}
+
+$pdo = new pdo($dsn, $user, $password, $opt);
+$user = User::checkId($pdo, $_SESSION['id']);
+if (empty($user)) {header("Location: index.php");}
 
 ?>
 <!DOCTYPE html>
@@ -14,14 +17,15 @@ if (!CheckId($_SESSION['id'])) {header("Location: index.php");}
 <h1>Fiche utilisateur</h1>
 <!-- Première ligne avec du code PHP -->
 <?php
-$key=$_GET["nom"];
+$idASupprimer=$_GET["id"];
 
 if (empty($_SESSION['login'])) {
     header("Location: index.php");
 }
 
 try {
-    $user->deleteInDataBase($pdo);
+    $user = User::checkId($pdo, $idASupprimer);
+    User::deleteInDataBase($pdo, $user);
 } catch (Exception $e) {
     die($e->getMessage());
 }
