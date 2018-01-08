@@ -1,11 +1,14 @@
 <?php
 ini_set('display_errors', true);
-$host = '127.0.0.1';
-$db = 'mydb';
-$user = 'haja';
-$password = 'haja';
-$charset='utf8mb4';
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+
+require_once "config.php";
+
+$host = $config['host'];
+$db = $config['db'];
+$user = $config['user'];
+$password = $config['password'];
+$charset = $config['charset'];
+$dsn = $config['dsn'];
 $opt=[
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

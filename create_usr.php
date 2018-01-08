@@ -17,8 +17,7 @@ if (!CheckId($_SESSION['id'])) {header("Location: index.php");}
 <!-- Première ligne avec du code PHP -->
 <?php
 
-//var_dump($_POST['usr_login']);
-//die();
+
 $user_login= $_POST['usr_login'];
 $user_pwd=$_POST['usr_pwd'];
 $user_name= $_POST['usr_name'];
