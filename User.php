@@ -284,9 +284,8 @@ class User extends DbEntity
         $result = $user->getInfosFromDataBaseById($pdo, $id);
 
         if (empty($result)) {
-
+            throw new Exception("Empty response");
         }
-
 
         $user->parseUserInfo($result);
 

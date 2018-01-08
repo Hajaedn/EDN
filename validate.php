@@ -33,6 +33,7 @@ $pdo = new pdo($dsn, $user, $password, $opt);
 try {
     $user = User::connect($pdo, $_POST['my_id'], $_POST['my_pass']);
 } catch (Exception $e) {
+
     die($e->getMessage());
 }
 //
