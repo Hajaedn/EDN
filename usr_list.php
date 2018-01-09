@@ -31,17 +31,19 @@ $arrAll=$prep->fetchAll();
 <div class="container">
     <div class="row">
         <div class="col">
-            <table class="table">
+            <table class="table table-dark">
                 <!-- Ligne titre -->
-                <tr>
-                    <th> Utilisateur </th>
-                    <th> Profil </th>
-                    <th> Mot de passe </th>
-                    <th> Droits </th>
-                    <th> Date de création </th>
-                    <th> Actif O/N </th>
-                    <th> Action </th>
-                </tr>
+                <thead class="thead-light">
+                    <tr>
+                        <th> Utilisateur </th>
+                        <th> Profil </th>
+                        <th> Mot de passe </th>
+                        <th> Droits </th>
+                        <th> Date de création </th>
+                        <th> Actif O/N </th>
+                        <th> Action </th>
+                    </tr>
+                </thead>
                 <?php
                 foreach($arrAll as $ligne) {
                     $name = $ligne['usr_name'];
@@ -77,10 +79,28 @@ $arrAll=$prep->fetchAll();
 
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                     <a class="dropdown-item" href='usr_fiche_view.php?id=<?= $id ?>&action=voir'>Voir</a>
-                                    <?php if (($_SESSION['sess_droits'] == 'admin') || ($_SESSION['id']==$id)){ ?>
-                                        <a class="dropdown-item" href="usr_fiche_edit.php?nom=<?= $id ?>">Edit</a>
-                                        <a class="dropdown-item" href='usr_fiche_view.php?id=<?= $id ?>&action=suppr'>Delete</a>
-                                    <?php } ?>
+                                    <?php
+                                    $autorized = false;
+                                    if (($user->getRights() == User::RIGHTS_ADMIN) && !($user->getId() == $id)){
+                                        $autorized = true;
+                                    }
+
+                                    echo '<a class="dropdown-item" href=';
+                                    if($autorized) {
+                                        echo '"usr_fiche_edit.php?nom=' . $id .'"';
+                                    }
+                                    echo '>Edit</a>';
+
+                                    echo '<a class="dropdown-item" href=';
+                                    if($autorized) {
+                                        echo '"usr_fiche_view.php?id=' . $id .'&action=suppr"';
+                                    }
+                                    echo '>Delete</a>';
+                                    ?>
+
+<!--                                        <a class="dropdown-item" href="usr_fiche_edit.php?nom=--><?//= $id ?><!--">Edit</a>-->
+<!--                                        <a class="dropdown-item" href='usr_fiche_view.php?id=--><?//= $id ?><!--&action=suppr'>Delete</a>-->
+<!--                                    --><?php //} ?>
                                 </div>
                             </div>
 
