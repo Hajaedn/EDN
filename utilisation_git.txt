@@ -15,7 +15,7 @@
 
 
 
-// Effectue un push et définit la branche par défaut pour push / pull / ...
+// Effectue un push et définit la branche distante à associer à la branche courante
 
     git push --set-upstream origin [branche souhaitée]
 
@@ -29,3 +29,8 @@
     push
     aller dans la branche user-class par ex
     git merge master
+
+
+// supprimer une branche
+
+    utiliser prune (revoir comment)
