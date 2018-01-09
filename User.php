@@ -10,11 +10,59 @@ class User extends DbEntity
     const RIGHTS_ADMIN = 'admin';
 
 
-    protected $_id;
+
     protected $_login;
     protected $_password;
     protected $_rights;
     protected $_creationDate;
+
+    /**
+     * @return mixed
+     */
+    public function getLogin()
+    {
+        return $this->_login;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+        return $this->_password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRights()
+    {
+        return $this->_rights;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreationDate()
+    {
+        return $this->_creationDate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->_name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEnable()
+    {
+        return $this->_enable;
+    }
     protected $_name;
     protected $_enable;
 
@@ -38,10 +86,11 @@ class User extends DbEntity
 
     /**
      * @param $array
+     * @throws Exception
      */
     public function parseUserInfo($array){
         foreach($this->getDbColumnsMapping() as $attrName => $dbName) {
-            $$attrName = $array[$dbName];
+            $this->$attrName = $array[$dbName];
         }
         $this->setId($array[$this->getDbPrimaryKeyName()]);
     }
@@ -78,8 +127,7 @@ class User extends DbEntity
         $this->_login = $login;
         $this->_password = $password;
         $this->setRights($rights);
-        //$this->_creationDate = date('d/m/Y');
-        $this->_name = $name;
+        $this->setName($name);
         $this->_enable = $enable;
         $this->_creationDate = $creationDate;
         return $this;
@@ -103,6 +151,8 @@ class User extends DbEntity
 
         return $this;
     }
+
+
 
     /**
      * @param name

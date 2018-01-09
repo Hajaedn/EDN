@@ -52,7 +52,14 @@ $arrAll=$prep->fetchAll();
         $login = $ligne['usr_login'];
         $pwd = $ligne['usr_pwd'];
         $right = $ligne['usr_right'];
+
+
         $create = $ligne['usr_create'];
+
+        //change date format
+        $myDateTime = DateTime::createFromFormat('Y-m-d', $create);
+        $create = $myDateTime->format('d-m-Y');
+
         $enable = 'off';
         if ($ligne['usr_enable']) {
             $enable = 'actif';
