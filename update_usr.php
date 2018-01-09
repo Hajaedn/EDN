@@ -63,7 +63,7 @@ try {
 } catch (PDOException $e) {
     die($e->getMessage() . 'Erreur de base de donnée cachée');
 } catch (Exception $e) {
-    var_dump($e->getTraceAsString());
+    var_dump($e->getMessage());
     die('Autre erreur cachée');
 }
 

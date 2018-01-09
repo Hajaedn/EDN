@@ -21,11 +21,14 @@ if (empty($user)) {header("Location: index.php");}
 <?php
 
     $key=$_GET["nom"];
+
+    $userToEdit = User::checkConnection($pdo, $key);
+
+
     if (CheckRight($_SESSION['id'], $key)==false) {
         throw new Exception('Pas les droits');
     }
 
-//    $pdo = new pdo($dsn, $user, $password, $opt);
     $query = 'SELECT * FROM users WHERE usr_id =:usr_id';
     $prep = $pdo->prepare($query);
     $prep->bindValue(':usr_id', $key, PDO::PARAM_STR);

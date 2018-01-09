@@ -39,7 +39,7 @@ abstract class DbEntity
     public function saveInDatabase(PDO $pdo){
         //user infos are not set or empty
         foreach ($this->getDbColumnsMapping() as $attrName => $dbName) {
-            if (empty($this->$attrName)) {
+            if (!isset($this->$attrName)) {
                 throw new InvalidArgumentException($attrName." is not set or empty");
             }
         }

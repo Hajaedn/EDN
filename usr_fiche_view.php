@@ -34,7 +34,7 @@ if ($result['usr_enable']) {
     $enable = 'Actif';
 };
 $type_prf = 'Utilisateur';
-if ($result['usr_right']==RIGHTS_ADMIN) {
+if ($result['usr_right']==User::RIGHTS_ADMIN) {
     $type_prf = 'Administrateur';
 };
 ?>

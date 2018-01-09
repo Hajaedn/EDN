@@ -111,7 +111,7 @@ class User extends DbEntity
     public function setName($name)
     {
 
-        if(empty($name)) {
+        if(!isset($name)) {
             throw new InvalidArgumentException("Empty name is not a valid name");
         }
 
@@ -127,7 +127,7 @@ class User extends DbEntity
     public function setLogin($login)
     {
 
-        if(empty($login)) {
+        if(!isset($login)) {
             throw new InvalidArgumentException("Empty login is not a valid login");
         }
 
@@ -144,7 +144,7 @@ class User extends DbEntity
     public function setPassword($password)
     {
 
-        if(empty($password)) {
+        if(!isset($password)) {
             throw new InvalidArgumentException("Empty password is not a valid password");
         }
 
