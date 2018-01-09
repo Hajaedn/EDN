@@ -75,11 +75,11 @@ $arrAll=$prep->fetchAll();
 
                     ?>
                     <tr <?php if($isMe){echo'class="bg-primary"';}?>>
-                        <td><?= $name ?></td>
-                        <td><?= $login ?></td>
-                        <td><?= $pwd ?></td>
-                        <td align='center'><?= $right ?></td>
-                        <td align='center'><?= $create ?></td>
+                        <td><?= $userInLine->getName(); ?></td>
+                        <td><?= $userInLine->getLogin(); ?></td>
+                        <td><?= $userInLine->getPassword(); ?></td>
+                        <td align='center'><?= $userInLine->getRights(); ?></td>
+                        <td align='center'><?= $userInLine->getCreationDate(); ?></td>
                         <td align='center'><?= $enable ?></td>
                         <td>
                             <div class="dropdown show">
