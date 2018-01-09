@@ -6,7 +6,7 @@ $pdo = new pdo($dsn, $user, $password, $opt);
 //die;
 $user = User::getFromDataBase($pdo, $_SESSION['id']);
 if (empty($user)) {header("Location: index.php");}
-
+require_once 'header.php';
 ?>
 <!DOCTYPE html>
 <html>
