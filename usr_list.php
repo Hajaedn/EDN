@@ -63,8 +63,18 @@ $arrAll=$prep->fetchAll();
                     if ($ligne['usr_enable']) {
                         $enable = 'actif';
                     };
+
+                    $userInLine = new User();
+                    $userInLine->parseUserInfo($ligne);
+
+                    $isMe = false;
+                    if($user == $userInLine)
+                    {
+                        $isMe = true;
+                    }
+
                     ?>
-                    <tr>
+                    <tr <?php if($isMe){echo'class="bg-primary"';}?>>
                         <td><?= $name ?></td>
                         <td><?= $login ?></td>
                         <td><?= $pwd ?></td>
