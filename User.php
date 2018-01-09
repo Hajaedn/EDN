@@ -230,8 +230,9 @@ class User extends DbEntity
      * @param PDO $pdo
      * @param $id
      * @return User
+     * @throws Exception
      */
-    public static function checkConnection(PDO $pdo, $id) {
+    public static function getFromDataBase(PDO $pdo, $id) {
 
         $user = new User();
 

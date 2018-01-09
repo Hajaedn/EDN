@@ -4,7 +4,7 @@ session_start();
 
 //vérification de la connexion
 $pdo = new pdo($dsn, $user, $password, $opt);
-$user = User::checkConnection($pdo, $_SESSION['id']);
+$user = User::getFromDataBase($pdo, $_SESSION['id']);
 if (empty($user)) {header("Location: index.php");}
 
 ?>
@@ -28,7 +28,7 @@ if (empty($_SESSION['login'])) {
 }
 
 try {
-    $user = User::checkConnection($pdo, $idASupprimer);
+    $user = User::getFromDataBase($pdo, $idASupprimer);
     User::deleteInDataBase($pdo, $user);
 } catch (Exception $e) {
     die($e->getMessage());

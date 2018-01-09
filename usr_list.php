@@ -4,7 +4,7 @@ session_start();
 $pdo = new pdo($dsn, $user, $password, $opt);
 //var_dump($_SESSION['id']);
 //die;
-$user = User::checkConnection($pdo, $_SESSION['id']);
+$user = User::getFromDataBase($pdo, $_SESSION['id']);
 if (empty($user)) {header("Location: index.php");}
 
 ?>

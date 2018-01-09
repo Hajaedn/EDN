@@ -3,7 +3,7 @@ require_once 'ma_lib.php';
 session_start();
 
 $pdo = new pdo($dsn, $user, $password, $opt);
-$user = User::checkConnection($pdo, $_SESSION['id']);
+$user = User::getFromDataBase($pdo, $_SESSION['id']);
 if (empty($user)) {header("Location: index.php");}
 
 ?>
@@ -22,7 +22,7 @@ if (empty($user)) {header("Location: index.php");}
 
     $key=$_GET["nom"];
 
-    $userToEdit = User::checkConnection($pdo, $key);
+    $userToEdit = User::getFromDataBase($pdo, $key);
 
 
     if (CheckRight($_SESSION['id'], $key)==false) {
