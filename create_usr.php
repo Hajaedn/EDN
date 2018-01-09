@@ -3,7 +3,7 @@ require_once 'ma_lib.php';
 session_start();
 
 $pdo = new pdo($dsn, $user, $password, $opt);
-$user = User::checkId($pdo, $_SESSION['id']);
+$user = User::checkConnection($pdo, $_SESSION['id']);
 if (empty($user)) {header("Location: index.php");}
 
 ?>

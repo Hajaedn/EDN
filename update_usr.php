@@ -3,7 +3,7 @@ require_once 'ma_lib.php';
 session_start();
 
 $pdo = new pdo($dsn, $user, $password, $opt);
-$user = User::checkId($pdo, $_SESSION['id']);
+$user = User::checkConnection($pdo, $_SESSION['id']);
 if (empty($user)) {header("Location: index.php");}
 
 ?>
@@ -29,6 +29,11 @@ try {
     }
 
     $user_id = $_POST['usr_id'];
+
+    $user = User::checkConnection($pdo, $user_id);
+    $user->setName($_POST['user_name']);
+
+    $user->saveInDatabase($pdo);
 
     $user_login = $_POST['usr_login'];
     $user_pwd = $_POST['usr_pwd'];

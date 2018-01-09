@@ -4,7 +4,7 @@ session_start();
 
 //vérification de la connexion
 $pdo = new pdo($dsn, $user, $password, $opt);
-$user = User::checkId($pdo, $_SESSION['id']);
+$user = User::checkConnection($pdo, $_SESSION['id']);
 if (empty($user)) {header("Location: index.php");}
 
 ?>
@@ -20,12 +20,15 @@ if (empty($user)) {header("Location: index.php");}
 <?php
 $idASupprimer=$_GET["id"];
 
+
+// Opération de Suppression dans la BDD
+// --------------------------------------
 if (empty($_SESSION['login'])) {
     header("Location: index.php");
 }
 
 try {
-    $user = User::checkId($pdo, $idASupprimer);
+    $user = User::checkConnection($pdo, $idASupprimer);
     User::deleteInDataBase($pdo, $user);
 } catch (Exception $e) {
     die($e->getMessage());

@@ -34,10 +34,11 @@ if ($result['usr_enable']) {
     $enable = 'Actif';
 };
 $type_prf = 'Utilisateur';
-if ($result['usr_right']=='admin') {
+if ($result['usr_right']==RIGHTS_ADMIN) {
     $type_prf = 'Administrateur';
 };
 ?>
+
 <fieldset>
     <legend>Informations d'identification</legend>
     <b>Nom :  </b><a><?php echo $result['usr_name']; ?></a> <br><br>
