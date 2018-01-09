@@ -44,6 +44,7 @@ abstract class DbEntity
             }
         }
 
+        // Cas de la Création
         if(empty($this->_dbPrimaryKeyValue)) {
             // Liste des Utilisateurs "actifs"
 
@@ -71,9 +72,31 @@ abstract class DbEntity
             $prep->execute();
 
             $this->_dbPrimaryKeyValue = $pdo->lastInsertId();
-        } else {
-            //TODO
-            throw new Exception("pas encore implementé");
+        }
+        // Cas de Mise à jour
+        else {
+//    $sql = 'UPDATE users set  usr_login = :usr_login, usr_pwd=:usr_pwd, usr_name=:usr_name, usr_right=:usr_right, usr_create=:usr_create, usr_enable=:usr_enable where usr_id=:id';
+            $sql = 'UPDATE ' . $this->getDbTableName() . ' SET ';
+
+            $sql .= implode(',',
+
+                array_map(
+                    function($v) {
+                        return $v. '=:' . $v;
+                    }, $this->getDbColumnsMapping()
+                )
+            );
+
+            $sql .= ' WHERE ';
+            $sql .= $this->getDbPrimaryKeyName();
+            $sql .= ' = :id';
+            $prep = $pdo->prepare($sql);
+
+            foreach($this->getDbColumnsMapping() as $attrName => $dbName) {
+                $prep->bindParam($dbName, $this->$attrName, PDO::PARAM_STR);
+            }
+            $prep->bindParam(':id', $this->_dbPrimaryKeyValue, PDO::PARAM_STR);
+            $prep->execute();
         }
     }
 

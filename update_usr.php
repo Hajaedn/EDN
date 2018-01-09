@@ -3,8 +3,8 @@ require_once 'ma_lib.php';
 session_start();
 
 $pdo = new pdo($dsn, $user, $password, $opt);
-$user = User::checkConnection($pdo, $_SESSION['id']);
-if (empty($user)) {header("Location: index.php");}
+$user_me = User::checkConnection($pdo, $_SESSION['id']);
+if (empty($user_me)) {header("Location: index.php");}
 
 ?>
 <!DOCTYPE html>
@@ -31,40 +31,37 @@ try {
     $user_id = $_POST['usr_id'];
 
     $user = User::checkConnection($pdo, $user_id);
-    $user->setName($_POST['user_name']);
-
+    $user->setName($_POST['usr_name']);
+    $user->setPassword($_POST['usr_pwd']);
+    $user->setLogin($_POST['usr_login']);
+    $user->setEnable($_POST['usr_enable']);
+    $user->setRights($_POST['usr_right']);
+    $user->setCreationDate($_POST['usr_create']);
     $user->saveInDatabase($pdo);
 
-    $user_login = $_POST['usr_login'];
-    $user_pwd = $_POST['usr_pwd'];
-    $user_name = $_POST['usr_name'];
-    $user_right = $_POST['usr_right'];
-    $user_create = $_POST['usr_create'];
-    $user_enable = $_POST['usr_enable'];
 
-
-    if (CheckRight($_SESSION['id'], $user_id)==false) {
+    if (CheckRight($_SESSION['id'], $user_id) == false) {
         throw new InvalidHttpPostArgumentException('Pas les droits');
     }
 
 
-//    $pdo = new pdo($dsn, $user, $password, $opt);
-
-    // Mise à jour Utilisateur
-    $sql = 'UPDATE users set  usr_login = :usr_login, usr_pwd=:usr_pwd, usr_name=:usr_name, usr_right=:usr_right, usr_create=:usr_create, usr_enable=:usr_enable where usr_id=:id';
-    $prep = $pdo->prepare($sql);
-    $prep->bindParam('usr_login', $user_login, PDO::PARAM_STR);
-    $prep->bindParam('usr_pwd', $user_pwd, PDO::PARAM_STR);
-    $prep->bindParam('usr_name', $user_name, PDO::PARAM_STR);
-    $prep->bindParam('usr_right', $user_right, PDO::PARAM_STR);
-    $prep->bindParam('usr_create', $user_create, PDO::PARAM_INT);
-    $prep->bindParam('usr_enable', $user_enable, PDO::PARAM_INT);
-    $prep->bindParam('id', $user_id, PDO::PARAM_INT);
-    $prep->execute();
+////    $pdo = new pdo($dsn, $user, $password, $opt);
+//
+//    // Mise à jour Utilisateur
+//    $sql = 'UPDATE users set  usr_login = :usr_login, usr_pwd=:usr_pwd, usr_name=:usr_name, usr_right=:usr_right, usr_create=:usr_create, usr_enable=:usr_enable where usr_id=:id';
+//    $prep = $pdo->prepare($sql);
+//    $prep->bindParam('usr_login', $user_login, PDO::PARAM_STR);
+//    $prep->bindParam('usr_pwd', $user_pwd, PDO::PARAM_STR);
+//    $prep->bindParam('usr_name', $user_name, PDO::PARAM_STR);
+//    $prep->bindParam('usr_right', $user_right, PDO::PARAM_STR);
+//    $prep->bindParam('usr_create', $user_create, PDO::PARAM_INT);
+//    $prep->bindParam('usr_enable', $user_enable, PDO::PARAM_INT);
+//    $prep->bindParam('id', $user_id, PDO::PARAM_INT);
+//    $prep->execute();
 } catch(InvalidHttpPostArgumentException $e) {
     die($e->getMessage());
 } catch (PDOException $e) {
-    die('Erreur de base de donnée cachée');
+    die($e->getMessage() . 'Erreur de base de donnée cachée');
 } catch (Exception $e) {
     var_dump($e->getTraceAsString());
     die('Autre erreur cachée');

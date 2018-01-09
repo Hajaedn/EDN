@@ -121,6 +121,23 @@ class User extends DbEntity
     }
 
     /**
+     * @param login
+     * @return User
+     */
+    public function setLogin($login)
+    {
+
+        if(empty($login)) {
+            throw new InvalidArgumentException("Empty login is not a valid login");
+        }
+
+        $this->_login= $login;
+
+        return $this;
+    }
+
+
+    /**
      * @param password
      * @return User
      */
@@ -143,7 +160,7 @@ class User extends DbEntity
     public function setEnable($enable)
     {
 
-        if (! in_array($enable, [true, false],true))
+        if (! in_array($enable, [1, 0]))
         {
             throw new InvalidArgumentException("Enable must be a boolean value");
         }
