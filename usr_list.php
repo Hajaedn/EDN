@@ -8,13 +8,6 @@ $user = User::getFromDataBase($pdo, $_SESSION['id']);
 if (empty($user)) {header("Location: index.php");}
 require_once 'header.php';
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Utilisateurs</title>
-</head>
-<body>
 <h1>Liste des utilisateurs</h1>
 
 <a>Vous êtes : </a><?php echo $_SESSION['name'] ?>
