@@ -97,10 +97,6 @@ $arrAll=$prep->fetchAll();
                                     }
                                     echo '>Delete</a>';
                                     ?>
-
-<!--                                        <a class="dropdown-item" href="usr_fiche_edit.php?nom=--><?//= $id ?><!--">Edit</a>-->
-<!--                                        <a class="dropdown-item" href='usr_fiche_view.php?id=--><?//= $id ?><!--&action=suppr'>Delete</a>-->
-<!--                                    --><?php //} ?>
                                 </div>
                             </div>
 
