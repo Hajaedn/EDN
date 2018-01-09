@@ -26,6 +26,7 @@ try {
     $userToEdit = User::getFromDataBase($pdo, $key);
 
 } catch (Exception $e) {
+    //utilisateur non connecté
     die($e->getMessage());
 }
 
