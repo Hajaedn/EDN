@@ -1,5 +1,5 @@
 <?php
-require_once 'ma_lib.php';
+
 require_once 'DbEntity.php';
 
 
