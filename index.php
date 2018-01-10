@@ -1,10 +1,10 @@
 <?php
+
 require_once 'ma_lib.php';
 include 'header.php';
+
 ?>
-    <title>Connection</title>
-</head>
-<body>
+
 <h1>Identification</h1>
 <!-- Première ligne avec du code PHP -->
 Identifiez vous :

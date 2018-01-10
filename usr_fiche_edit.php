@@ -111,4 +111,6 @@ require_once 'header.php';
 </form>
 </div>
 
-</body>
+<?php
+include 'footer.php';
+?>

@@ -11,10 +11,6 @@ if (empty($user)) {
 require_once 'header.php';
 ?>
 
-<title>Utilisateurs</title>
-</head>
-<body>
-
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
         <h1>Liste des utilisateurs</h1>

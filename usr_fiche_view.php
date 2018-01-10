@@ -1,14 +1,9 @@
 <?php
 require_once 'ma_lib.php';
 session_start();
+include 'header.php';
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Utilisateurs</title>
-</head>
-<body>
+
 <h1>Fiche utilisateur</h1>
 <!-- Première ligne avec du code PHP -->
 <?php
@@ -67,4 +62,6 @@ if ($userToSee->getRights() == User::RIGHTS_ADMIN) {
     }
 ?>
 
-</body>
+<?php
+include 'footer.php';
+?>

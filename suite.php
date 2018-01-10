@@ -3,10 +3,6 @@ require_once 'ma_lib.php';
 session_start();
 include 'header.php';
 ?>
-
-    <title>Utilisateurs</title>
-</head>
-<body>
 <h1>Gestion des utilisateurs</h1>
 <!-- Première ligne avec du code PHP -->
 
