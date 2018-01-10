@@ -14,6 +14,8 @@ class User extends DbEntity
     protected $_password;
     protected $_rights;
     protected $_creationDate;
+    protected $_name;
+    protected $_enable;
 
     /**
      * @return mixed
@@ -62,8 +64,7 @@ class User extends DbEntity
     {
         return $this->_enable;
     }
-    protected $_name;
-    protected $_enable;
+
 
 
     public function getDbTableName()
