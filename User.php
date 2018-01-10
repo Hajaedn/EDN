@@ -10,7 +10,6 @@ class User extends DbEntity
     const RIGHTS_ADMIN = 'admin';
 
 
-
     protected $_login;
     protected $_password;
     protected $_rights;
@@ -266,12 +265,11 @@ class User extends DbEntity
         session_start();
 //      $_SESSION['connected_user'] = $user->getId();
         $_SESSION['id'] = $user->getId();
-        $_SESSION['sess_actif']=$result[('usr_enable')];
-    //l'utilisateur est inscrit en base de données
-        $_SESSION['sess_droits']=$result[('usr_right')];
-        $_SESSION['login']= $_POST['my_id'];
-        $_SESSION['name']= $result['usr_name'];
-        $_SESSION['id']= $result['usr_id'];
+        $_SESSION['sess_actif']= $user->getEnable();
+
+        $_SESSION['sess_droits']=$user->getRights();
+        $_SESSION['login']= $user->getLogin();
+        $_SESSION['name']= $user->getName();
 
         return $user;
     }
@@ -299,7 +297,7 @@ class User extends DbEntity
 
 
     public function disconnect() {
-        unset($_SESSION['connected_user']);
+        //unset($_SESSION['connected_user']);
     }
 
 }
