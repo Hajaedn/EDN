@@ -2,7 +2,10 @@
 ini_set('display_errors', true);
 
 require_once "config.php";
-require_once "User.php";
+
+spl_autoload_register(function ($class) {
+    include $class . '.php';
+});
 
 $host = $config['host'];
 $db = $config['db'];
