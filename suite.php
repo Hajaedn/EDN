@@ -1,12 +1,9 @@
 <?php
 require_once 'ma_lib.php';
 session_start();
-
+include 'header.php';
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
+
     <title>Utilisateurs</title>
 </head>
 <body>
@@ -17,4 +14,7 @@ session_start();
 <p>Consulter la liste des utilisateurs <a href="usr_list.php">Cliquer ici</a><br></p>
 <p>Donner vos impressions pour Johnny <a href="artiste.php">Cliquer ici</a> ?</p>
 
-</body>
+<?php
+include 'footer.php';
+?>
+

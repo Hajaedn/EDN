@@ -1,10 +1,7 @@
 <?php
 require_once 'ma_lib.php';
+include 'header.php';
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
     <title>Connection</title>
 </head>
 <body>
@@ -47,5 +44,6 @@ Identifiez vous :
         <br><br><input type="submit" value="Valider">
     </p>
 </form>
-</body>
-</html>
+<?php
+include 'footer.php';
+?>
