@@ -45,56 +45,69 @@ require_once 'header.php';
     </div>
 </div>
 
-<div class="container">
 
+<div class="container">
 <form method="post" action="update_usr.php">
     <input type="hidden" name="usr_id" value="<?php echo $userToEdit->getId(); ?>" />
-    <div class="form-group">
-            <legend>Informations d'identification</legend>
-            <label for="Nom">Nom</label>
-            <input class="form-control" id="Nom" type="text" name="usr_name" value="<?php echo $userToEdit->getName(); ?>"/><br>
-            <b>Profil : </b><input class="form-control" id="InputIdentification" type="text" name="usr_login" value="<?php echo $userToEdit->getLogin() ?>"/><br>
-            <b>Mot de passe : </b><input type="text" class="form-control" id="InputIdentification" name="usr_pwd" value="<?php echo $userToEdit->getPassword(); ?>"/><br>
 
+    <legend>Informations d'identification</legend>
+    <div class="form-group">
+        <label for="Nom">Nom</label>
+        <input class="form-control" id="Nom" type="text" name="usr_name" value="<?php echo $userToEdit->getName(); ?>"/>
     </div>
-    <div class="form-group">
-        <fieldset>
-            <label>Informations annexes</label>
-            <b>Date d'inscription : </b><input type="date" class="form-control" name="usr_create" value="<?php echo $userToEdit->getCreationDate(); ?>"/><br><br>
-            <b>Type de profil : </b><br>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="Profil">Profil</label>
+            <input class="form-control" id="Profil" type="text" name="usr_login" value="<?php echo $userToEdit->getLogin() ?>"/>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="Pass">Mot de Passe</label>
+            <input type="text" class="form-control" id="Pass" name="usr_pwd" value="<?php echo $userToEdit->getPassword(); ?>"/>
+        </div>
+    </div>
 
+
+    <legend>Informations annexes</legend>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="Date">Date d'inscription :</label>
+            <input type="date" class="form-control" id="Date" name="usr_create" value="<?php echo $userToEdit->getCreationDate(); ?>"/>
+
+        </div>
+        <div class="form-group col-md-4">
+
+            <label for="Profil">Type de profil</label>
+            <div class="form-check">
+                <!-- Choix bouton radio en checked -->
+
+                <?php
+                foreach(User::getRightsValues() as $rightValue){
+                        $mustCheckRadio = ($rightValue == $userToEdit->getRights());
+                        echo '<input class="form-check-input" type="radio" name="usr_right" value=\'' . $rightValue . '\'';
+                        echo ($mustCheckRadio? 'checked' : '') . ' > '. $rightValue . '<br>';
+                    }
+                ?>
+            </div>
+        </div>
+        <div class="form-group col-md-4">
             <!-- Choix bouton radio en checked -->
-
+            <label for="Enable">Profil actif</label>
+            <div class="form-check">
             <?php
-            foreach(User::getRightsValues() as $rightValue){
-
-                $mustCheckRadio = ($rightValue == $userToEdit->getRights());
-
-                echo '<input type="radio" name="usr_right" value=\'' . $rightValue . '\'';
-
-                echo ($mustCheckRadio? 'checked' : '') . ' > '. $rightValue . '<br>';
-
-            }
-            ?>
-            <!-- Choix bouton radio en checked -->
-            <b>Profil actif : </b><br>
-            <?php
-
             $mustCheckRadio = ($userToEdit->getEnable() == 1);
 
-
-            echo '<input type="radio" name="usr_enable" value=1 ';
+            echo '<input class="form-check-input" type="radio" name="usr_enable" value=1 ';
             echo ($mustCheckRadio ? 'checked' : '');
             echo '> Oui<br>';
 
-            echo '<input type="radio" name="usr_enable" value=0 ';
+            echo '<input class="form-check-input" type="radio" name="usr_enable" value=0 ';
             echo (!$mustCheckRadio ? 'checked' : '');
             echo '> Non <br>';
             ?>
-        </fieldset>
+        </div>
+    <div class="form-group">
+        <input class="form-group" type="submit" value="Valider">
     </div>
-    <br><input type="submit" value="Valider">
-
 </form>
 </div>
 
