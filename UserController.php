@@ -156,6 +156,28 @@ class UserController
         );
     }
 
+    public function viewUsr(){
+
+//        $pdo = new pdo($dsn, $user, $password, $opt);
+        $Id=$_GET['Id'];
+        $action=$_GET['modAct'];
+        try {
+            $userToSee = User::getFromDataBase($this->getPdo(), $Id);
+        } catch (Exception $e) {
+            //pas connecté ou problème de connexion bdd
+            die($e->getMessage());
+        }
+
+
+        echo $this->renderView(
+            "usr_fiche_edit.php",
+            array(
+                'userToSee' => $userToSee,
+                'modAct' => $action
+            )
+        );
+    }
+
     protected function renderView($template, array $data = array()) {
         extract($data, EXTR_SKIP);
         ob_start();

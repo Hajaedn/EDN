@@ -41,7 +41,7 @@
                         <td><?= $userInLine->getName(); ?></td>
                         <td><?= $userInLine->getLogin(); ?></td>
                         <td><?= $userInLine->getPassword(); ?></td>
-                        <td align='center'><?= $userInLine->getRights()=='admin' ? "Administrateur" : "Utilisateur"; ?></td>
+                        <td align='center'><?= $userInLine->getRights()== User::RIGHTS_ADMIN ? "Administrateur" : "Utilisateur"; ?></td>
                         <td align='center'><?= $userInLine->getCreationDateForDisplay(); ?></td>
                         <td align='center'><?= $userInLine->getEnable() ? "actif" : "off" ?></td>
                         <td>
@@ -54,19 +54,20 @@
 
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                     <a class="dropdown-item"
-                                       href='usr_fiche_view.php?id=<?= $id ?>&action=voir'>Voir</a>
+                                       href='index.php?controller=user&action=viewUsr&Id=<?=$userInLine->getId(); ?>&modAct=view'>Voir</a>
                                     <?php
                                     $canEdit = $current_user->canEdit($userInLine->getId());
 
                                     if ($canEdit) {
+
                                         echo '<a class="dropdown-item" href=';
-                                        echo '"usr_fiche_edit.php?nom=' . $id . '"';
+                                        echo '"index.php?controller=user&action=viewUsr&Id='. $userInLine->getId() . '&modAct=edit"';
                                         echo '>Edit</a>';
                                     }
 
                                     if ($canEdit) {
                                         echo '<a class="dropdown-item" href=';
-                                        echo '"usr_fiche_view.php?id=' . $id . '&action=suppr"';
+                                        echo '"index.php?id=' . $userInLine->getId() . '&modAct=suppr"';
                                         echo '>Delete</a>';
                                     }
                                     ?>

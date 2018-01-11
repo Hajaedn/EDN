@@ -1,12 +1,12 @@
 <?php
-require_once 'ma_lib.php';
-session_start();
-
-$pdo = new pdo($dsn, $user, $password, $opt);
-$user = User::getFromDataBase($pdo, $_SESSION['id']);
-if (empty($user)) {header("Location: index.php");}
-require_once 'header.php';
-?>
+//require_once 'ma_lib.php';
+//session_start();
+//
+//$pdo = new pdo($dsn, $user, $password, $opt);
+//$user = User::getFromDataBase($pdo, $_SESSION['id']);
+//if (empty($user)) {header("Location: index.php");}
+//require_once 'header.php';
+//?>
 
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
@@ -16,7 +16,7 @@ require_once 'header.php';
         <!-- Première ligne avec du code PHP -->
         <?php
 
-        $key=$_GET["nom"];
+        $key=$userToSee->getId();
 
         try {
             $userToEdit = User::getFromDataBase($pdo, $key);
@@ -31,16 +31,6 @@ require_once 'header.php';
             throw new Exception('Pas les droits');
         }
 
-        //$query = 'SELECT * FROM users WHERE usr_id =:usr_id';
-        //$prep = $pdo->prepare($query);
-        //$prep->bindValue(':usr_id', $userToEdit->getId(), PDO::PARAM_STR);
-        //$prep->execute();
-        //$result = $prep->fetch();
-
-        //$enable = 'Off';
-        //if ($result['usr_enable']) {
-        //    $enable = 'Actif';
-        //};
         ?>
     </div>
 </div>
@@ -58,7 +48,7 @@ require_once 'header.php';
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="Profil">Profil</label>
-            <input class="form-control" id="Profil" type="text" name="usr_login" value="<?php echo $userToEdit->getLogin() ?>"/>
+            <input class="form-control" id="Profil" type="text" name="usr_login" value="<?php echo $userToEdit->getLogin() ?>" <?php echo $modAct!=='edit' ? 'disabled' : '' ?>/>
         </div>
         <div class="form-group col-md-6">
             <label for="Pass">Mot de Passe</label>
