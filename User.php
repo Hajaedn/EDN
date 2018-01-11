@@ -263,7 +263,7 @@ class User extends DbEntity
         $user = new User();
         $user->parseUserInfo($result);
 
-        session_start();
+//        session_start();// done in index.php
 //      $_SESSION['connected_user'] = $user->getId();
         $_SESSION['id'] = $user->getId();
         $_SESSION['sess_actif']= $user->getEnable();
