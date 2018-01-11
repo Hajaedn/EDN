@@ -52,6 +52,17 @@ class User extends DbEntity
     /**
      * @return mixed
      */
+    public function getCreationDateForDisplay()
+    {
+        //change date format
+        $myDateTime = DateTime::createFromFormat('Y-m-d', $this->_creationDate);
+        $create = $myDateTime->format('d-m-Y');
+        return $create;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getName()
     {
         return $this->_name;
@@ -82,6 +93,10 @@ class User extends DbEntity
             '_creationDate' => 'usr_create',
             '_enable' => 'usr_enable'
         ];
+    }
+
+    public function canEdit($id) {
+        return $this->getRights() == User::RIGHTS_ADMIN || $this->getId() == $id;
     }
 
     /**
