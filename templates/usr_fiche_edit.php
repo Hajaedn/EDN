@@ -38,7 +38,7 @@
     <div class="form-row">
         <div class="form-group col-md-4">
             <label for="Date">Date d'inscription :</label>
-            <input type="date" class="form-control" id="Date" name="usr_create" value="<?php echo $userSelected->getCreationDate(); ?>"/>
+            <input type="date" class="form-control" id="Date" name="usr_create" value="<?php echo $userSelected->getCreationDateForDisplay(); ?>"/>
 
         </div>
         <div class="form-group col-md-4">
