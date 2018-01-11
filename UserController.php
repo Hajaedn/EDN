@@ -158,7 +158,6 @@ class UserController
 
     public function viewUsr(){
 
-//        $pdo = new pdo($dsn, $user, $password, $opt);
         $Id=$_GET['Id'];
         $action=$_GET['modAct'];
         try {
@@ -167,7 +166,6 @@ class UserController
             //pas connecté ou problème de connexion bdd
             die($e->getMessage());
         }
-
 
         echo $this->renderView(
             "usr_fiche_edit.php",
