@@ -11,24 +11,33 @@ if(isset($_GET['controller'], $_GET['action'])){
 
 
 $userController = new UserController();
+
+
 try {
 
     //contrôles sur variables
     if(isset($controller, $action)){
 
         // choix de l'action à effectuer sur le UserController
-        switch($action){
-            case 'dologin':
-                $userController->doLogin();
-                break;
+//        switch($action){
+//            case 'dologin':
+//                $userController->doLogin();
+//                break;
+//
+//            case 'listUsr':
+//                $userController->listUsr($pdo);
+//                break;
+//
+//            default:
+//                $userController->login();
+//        }
 
-            case 'listUsr':
-                $userController->listUsr($pdo);
-                break;
+        // recover controller name
+        $controllerName = $controller . 'Controller';
 
-            default:
-                $userController->login();
-        }
+        $$controllerName->$action();// exact method name is passed as 'action'
+
+
     }
     else{
         $userController->login();

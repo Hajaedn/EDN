@@ -6,8 +6,23 @@
  * Time: 13:54
  */
 
+/**
+ * Class UserController
+ */
 class UserController
 {
+
+    public function __invoke($action)
+    {
+        // TODO: Implement __invoke() method.
+
+        if(method_exists($this, $$action)){
+            return $this->$$action();
+        }
+
+        throw new Exception("Trying to invoke inexistant controller method");
+    }
+
     /**
      * Print login page
      * @throws Exception
@@ -17,7 +32,7 @@ class UserController
         <h1>Identification</h1>
         <!-- Première ligne avec du code PHP -->
         Identifiez vous :
-        <form method="post" action="index.php?controller=user&action=dologin">
+        <form method="post" action="index.php?controller=user&action=doLogin">
             <p>
                 <input type="text" name="my_id"/><br>
                 <input type="password" name="my_pass"/>
