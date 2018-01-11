@@ -160,8 +160,9 @@ class UserController
 
         $Id=$_GET['Id'];
         $action=$_GET['modAct'];
+
         try {
-            $userToSee = User::getFromDataBase($this->getPdo(), $Id);
+            $userSelected = User::getFromDataBase($this->getPdo(), $Id);
         } catch (Exception $e) {
             //pas connecté ou problème de connexion bdd
             die($e->getMessage());
@@ -170,7 +171,7 @@ class UserController
         echo $this->renderView(
             "usr_fiche_edit.php",
             array(
-                'userToSee' => $userToSee,
+                'userSelected' => $userSelected,
                 'modAct' => $action
             )
         );
