@@ -107,7 +107,7 @@ class UserController
         die($e->getMessage());
         }
 
-        header("index.php?controller=user&action=suite");
+        header("Location: index.php?controller=user&action=suite");
     }
 
     public function listUsr($pdo){
