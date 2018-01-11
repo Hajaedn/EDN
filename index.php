@@ -18,7 +18,7 @@ try {
     //contrôles sur variables
     if(isset($controller, $action)){
 
-        // choix de l'action à effectuer sur le UserController
+//        // choix de l'action à effectuer sur le UserController
 //        switch($action){
 //            case 'dologin':
 //                $userController->doLogin();
@@ -35,7 +35,9 @@ try {
         // recover controller name
         $controllerName = $controller . 'Controller';
 
-        $$controllerName->$action();// exact method name is passed as 'action'
+//        $$controllerName->$action();// exact method name is passed as 'action'
+
+        $$controllerName($action);
 
 
     }

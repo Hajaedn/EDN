@@ -12,15 +12,20 @@
 class UserController
 {
 
+
     public function __invoke($action)
     {
         // TODO: Implement __invoke() method.
 
-        if(method_exists($this, $$action)){
-            return $this->$$action();
+        if(method_exists($this, $action)){
+            return $this->$action();
         }
 
         throw new Exception("Trying to invoke inexistant controller method");
+    }
+
+    public function suite(){
+        echo 'suite';
     }
 
     /**
