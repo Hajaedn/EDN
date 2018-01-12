@@ -158,20 +158,21 @@ class UserController
 
     public function viewUsr(){
 
+//        $pdo = new pdo($dsn, $user, $password, $opt);
         $Id=$_GET['Id'];
         $action=$_GET['modAct'];
-
         try {
-            $userSelected = User::getFromDataBase($this->getPdo(), $Id);
+            $userToSee = User::getFromDataBase($this->getPdo(), $Id);
         } catch (Exception $e) {
             //pas connecté ou problème de connexion bdd
             die($e->getMessage());
         }
 
+
         echo $this->renderView(
             "usr_fiche_edit.php",
             array(
-                'userSelected' => $userSelected,
+                'userToSee' => $userToSee,
                 'modAct' => $action
             )
         );

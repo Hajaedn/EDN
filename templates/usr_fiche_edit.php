@@ -1,14 +1,37 @@
 <?php
-/**
- * @var User $userSelected
- * @var string $modAct
- */
+//require_once 'ma_lib.php';
+//session_start();
+//
+//$pdo = new pdo($dsn, $user, $password, $opt);
+//$user = User::getFromDataBase($pdo, $_SESSION['id']);
+//if (empty($user)) {header("Location: index.php");}
+//require_once 'header.php';
 ?>
 
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
         <h1>Fiche utilisateur</h1>
+
         <!-- Saisie des infos pour un utilisateur existant -->
+        <!-- Première ligne avec du code PHP -->
+        <?php
+
+        $key=$userToSee->getId();
+
+        try {
+            $userToEdit = User::getFromDataBase($pdo, $key);
+
+        } catch (Exception $e) {
+            //utilisateur non connecté
+            die($e->getMessage());
+        }
+
+
+        if (CheckRight($_SESSION['id'], $key)==false) {
+            throw new Exception('Pas les droits');
+        }
+
+        ?>
     </div>
 </div>
 
@@ -16,20 +39,21 @@
 <div class="container">
 <form method="post" action="update_usr.php">
     <input type="hidden" name="usr_id" value="<?php echo $userSelected->getId(); ?>" />
+    <input type="hidden" name="usr_id" value="<?php echo $userToEdit->getId(); ?>" />
 
     <legend>Informations d'identification</legend>
     <div class="form-group">
         <label for="Nom">Nom</label>
-        <input class="form-control" id="Nom" type="text" name="usr_name" value="<?php echo $userSelected->getName(); ?>" <?php echo $modAct!=='edit' ? ' disabled' : '' ?> />
+        <input class="form-control" id="Nom" type="text" name="usr_name" value="<?php echo $userToEdit->getName(); ?>"/>
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="Profil">Profil</label>
-            <input class="form-control" id="Profil" type="text" name="usr_login" value="<?php echo $userSelected->getLogin() ?>" <?php echo $modAct!=='edit' ? ' disabled' : '' ?> />
+            <input class="form-control" id="Profil" type="text" name="usr_login" value="<?php echo $userToEdit->getLogin() ?>" <?php echo $modAct!=='edit' ? 'disabled' : '' ?>/>
         </div>
         <div class="form-group col-md-6">
             <label for="Pass">Mot de Passe</label>
-            <input type="text" class="form-control" id="Pass" name="usr_pwd" value="<?php echo $userSelected->getPassword(); ?>" <?php echo $modAct!=='edit' ? ' disabled' : '' ?>/>
+            <input type="text" class="form-control" id="Pass" name="usr_pwd" value="<?php echo $userToEdit->getPassword(); ?>"/>
         </div>
     </div>
 
@@ -38,7 +62,7 @@
     <div class="form-row">
         <div class="form-group col-md-4">
             <label for="Date">Date d'inscription :</label>
-            <input type="date" class="form-control" id="Date" name="usr_create" value="<?php echo $userSelected->getCreationDate(); ?>" <?php echo $modAct!=='edit' ? ' disabled' : '' ?> />
+            <input type="date" class="form-control" id="Date" name="usr_create" value="<?php echo $userToEdit->getCreationDate(); ?>"/>
 
         </div>
         <div class="form-group col-md-4">
@@ -49,11 +73,9 @@
 
                 <?php
                 foreach(User::getRightsValues() as $rightValue){
-                        $mustCheckRadio = ($rightValue == $userSelected->getRights());
+                        $mustCheckRadio = ($rightValue == $userToEdit->getRights());
                         echo '<input class="form-check-input" type="radio" name="usr_right" value=\'' . $rightValue . '\'';
-                        echo ($mustCheckRadio? 'checked' : '');
-                        echo $modAct!=='edit' ? ' disabled' : '';
-                        echo ' > ' . $rightValue . '<br>';
+                        echo ($mustCheckRadio? 'checked' : '') . ' > '. $rightValue . '<br>';
                     }
                 ?>
             </div>
@@ -63,16 +85,14 @@
             <label for="Enable">Profil actif</label>
             <div class="form-check">
             <?php
-            $mustCheckRadio = ($userSelected->getEnable() == 1);
+            $mustCheckRadio = ($userToEdit->getEnable() == 1);
 
             echo '<input class="form-check-input" type="radio" name="usr_enable" value=1 ';
             echo ($mustCheckRadio ? 'checked' : '');
-            echo $modAct!=='edit' ? ' disabled' : '';
             echo '> Oui<br>';
 
             echo '<input class="form-check-input" type="radio" name="usr_enable" value=0 ';
             echo (!$mustCheckRadio ? 'checked' : '');
-            echo $modAct!=='edit' ? ' disabled' : '';
             echo '> Non <br>';
             ?>
         </div>
@@ -81,3 +101,7 @@
     </div>
 </form>
 </div>
+
+<?php
+include 'footer.php';
+?>
